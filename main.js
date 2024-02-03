@@ -1,6 +1,6 @@
 // import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.1/vue.esm-browser.min.js';
 const { createApp } = Vue;
-const {Form,Field,ErrorMessage}=VeeValidate;
+const { Form, Field, ErrorMessage } = VeeValidate;
 import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/esm/axios.js';
 
 
@@ -23,7 +23,7 @@ VeeValidateI18n.loadLocaleFromURL('../zh_TW.json');
 VeeValidate.configure({
     generateMessage: VeeValidateI18n.localize('zh_TW'),
     validateOnInput: true, // 調整為：輸入文字時，就立即進行驗證
-  });
+});
 
 const app = createApp({
     data() {
@@ -113,10 +113,10 @@ const app = createApp({
                 })
         },
         addProductToCart(data) {
-            
+
             const { id, product_id, qty, type } = data;
 
-            if (type === 'button'||type==='modal') {    // 判斷是以用加入購物車or更改input count
+            if (type === 'button' || type === 'modal') {    // 判斷是以用加入購物車or更改input count
                 this.isLoadAddCart = product_id;
                 // this.isLoading = true;
                 return axios.post(`${api}/${apiPath}/cart`, {
@@ -127,8 +127,8 @@ const app = createApp({
                 })
                     .then((res) => {
                         // alert(res.data.message);
-                        if(type==='modal') this.closeProductModal();
-                        
+                        if (type === 'modal') this.closeProductModal();
+
                         return this.getProductCart();
 
                     })
@@ -180,16 +180,52 @@ const app = createApp({
                     alert(err.data.message);
                 })
         },
-        closeProductModal(){
-            this.isLoadOpenModal='';
+        closeProductModal() {
+            this.isLoadOpenModal = '';
             productModalInfo.hide();
         },
         isPhone(value) {
             const phoneNumber = /^(09)[0-9]{8}$/
             return phoneNumber.test(value) ? true : '需要正確的電話號碼'
         },
-        onSubmit(){
-            console.log('sunmit');
+
+
+        addOrder() {
+            this.isLoading = true;
+            const { email, name, phone, address, message } = this.user;
+            return axios.post(`${api}/${apiPath}/order`, {
+                data: {
+                    user: {
+                        name,
+                        email,
+                        tel: phone,
+                        address
+                    },
+                    message
+                }
+            })
+            .then((res)=>{
+                this.isLoading = false;
+                this.user={
+                    email: '',
+                    name: '',
+                    phone: '',
+                    address: '',
+                    message: ''
+    
+                };
+                alert(res.data.message);
+
+                return this.delProductCart('all');// 清空購物車
+            })
+            .catch((err)=>{
+                this.isLoading = false;
+                alert(err.data.message);
+            })
+        },
+        onSubmit() {
+            this.addOrder();
+            // 
         }
     },
     mounted() {
