@@ -36,7 +36,7 @@
                     .then((res) => {
                         const { token, expired } = res.data;
                         document.cookie = `hexVueToken=${token};expires=${new Date(expired)};path=/;`;
-                        return window.location = 'ShopPages.html';
+                        return window.location = 'index.html';
                     })
                     .catch((err) => {
                         this.isLoading = false;
