@@ -75,7 +75,8 @@ export default {
             this.$emit('del-cart', params);
         },
         addProductCount(cartData) {
-            const { id, product_id, qty } = cartData;
+            
+            const { id,product_id, qty } = cartData;
             const params = {
                 id,
                 product_id,

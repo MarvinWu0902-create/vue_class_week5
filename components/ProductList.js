@@ -22,18 +22,19 @@ export default {
                 {{product.title}}
             </td>
             <td>
-                <div class="h5">{{product.origin_price}} 元</div>
                 <del class="h6">原價 {{product.origin_price}} 元</del>
                 <div class="h5">現在只要 {{product.price}} 元</div>
             </td>
             <td>
                 <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-outline-secondary" @click="searchInfoMore(product.id)">
-                        <i class="fas  fa-pulse" :class="{'fa-spinner':isLoadSearchInfo && product.id===tempId}"></i>
+                    <button type="button" class="btn btn-outline-secondary" @click="searchInfoMore(product.id)"
+                    :disabled="isLoadSearchInfo===product.id">
+                        <i class="fas  fa-pulse" :class="{'fa-spinner':isLoadSearchInfo== product.id}"></i>
                         查看更多
                     </button>
-                    <button type="button" class="btn btn-outline-danger" @click="addProductToCart(product.id)">
-                        <i class="fas fa-pulse" :class="{'fa-spinner':isLoadAddToCart && product.id===tempId}"></i>
+                    <button type="button" class="btn btn-outline-danger" @click="addProductToCart(product.id)" 
+                    :disabled="isLoadAddToCart===product.id">
+                        <i class="fas fa-pulse" :class="{'fa-spinner':isLoadAddToCart===product.id}"></i>
                         加到購物車
                     </button>
                 </div>
@@ -45,10 +46,8 @@ export default {
     data() {
         return {
             InnerProductData: [],
-            isLoadAddToCart: false,
-            isLoadSearchInfo: false,
-            tempId: '',
-
+            isLoadAddToCart: '',
+            isLoadSearchInfo: '',
         }
     },
     methods: {
@@ -59,12 +58,9 @@ export default {
                 qty,
                 type: 'button'
             };
-            this.tempId = product_id; ///紀錄當下點擊的產品id
             this.$emit('addtocart', params);
         },
         searchInfoMore(product_id) {
-
-            this.tempId = product_id;
             this.$emit('open-modal', product_id);
         }
     },

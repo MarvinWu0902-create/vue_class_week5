@@ -30,22 +30,21 @@
                 <product-cart :carts-data="cartsData" :is-load="isLoadDelCart" :total-price="totalPrice"
                     :final-price="finalPrice" @del-cart="delProductCart" @add-count="addProductToCart">
                 </product-cart>
-                <product-modal :temp-product="tempProduct" ref="productModal"></product-modal>
+                <product-modal :temp-product="tempProduct" ref="productModal" :add-product="addProductToCart" :close="closeProductModal"></product-modal>
             </div>
             <!-- <product-validate></product-validate> -->
             <div class="my-5 row justify-content-center">
                 <v-form  class="col-md-6" v-slot="{ errors }" @submit="onSubmit">
-                    {{errors}}
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
             
                         <v-field id="email" name="email" type="email" class="form-control" v-model="user.email"
-                            :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|require"></v-field>
+                            :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required"></v-field>
             
                         <error-message name="email" class="invalid-feedback"></error-message>
                     </div>
            
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="name" class="form-label">收件人姓名</label>
                         <v-field id="name" name="姓名" type="text" class="form-control" v-model="user.name"
                             :class="{ 'is-invalid': errors['姓名'] }" placeholder="請輸入姓名" rules="required"></v-field>
@@ -71,7 +70,7 @@
                         <v-field id="message" name="message" type="text" class="form-control" cols="30" rows="10" v-model="user.message"
                             :class="{ 'is-invalid': errors['message'] }" placeholder="請輸入留言" rules="required" as="textarea"></v-field>
                         <error-message name="message" class="invalid-feedback"></error-message>
-                    </div> -->
+                    </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-danger">送出訂單</button>
                     </div>
@@ -79,9 +78,8 @@
             </div>
 
             <loading 
-            v-model:active="isLoading"
+            :active="isLoading"
             :can-cancel="true"
-            :on-cancel="true"
             :is-full-page="fullPage"/>
 
         </div>
@@ -104,7 +102,9 @@
         crossorigin="anonymous"></script>
     
         
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2"></script> -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 
     <!-- Loading -->
     <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@6"></script>

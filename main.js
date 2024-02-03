@@ -31,7 +31,7 @@ const app = createApp({
             productionData: [],
 
             cartsData: [],
-            isLoadAddCart: false,
+            isLoadAddCart: '',
             isLoadDelCart: false,
 
             isLoadOpenModal: false,
@@ -83,6 +83,7 @@ const app = createApp({
 
             return axios.get(`${api}/${apiPath}/${url}`)
                 .then((res) => {
+
                     const { products, product } = res.data;
                     type === 'all'
                         ? this.productionData = products
@@ -103,7 +104,7 @@ const app = createApp({
                     this.totalPrice = total;
                     this.finalPrice = final_total;
 
-                    this.isLoadAddCart = false;
+                    this.isLoadAddCart = '';
                     this.isLoadDelCart = false;
                     this.isLoading = false;
                 })
@@ -112,11 +113,12 @@ const app = createApp({
                 })
         },
         addProductToCart(data) {
+            
             const { id, product_id, qty, type } = data;
 
-            if (type === 'button') {    // 判斷是以用加入購物車or更改input count
-                this.isLoadAddCart = true;
-                this.isLoading = true;
+            if (type === 'button'||type==='modal') {    // 判斷是以用加入購物車or更改input count
+                this.isLoadAddCart = product_id;
+                // this.isLoading = true;
                 return axios.post(`${api}/${apiPath}/cart`, {
                     data: {
                         product_id,
@@ -125,6 +127,8 @@ const app = createApp({
                 })
                     .then((res) => {
                         // alert(res.data.message);
+                        if(type==='modal') this.closeProductModal();
+                        
                         return this.getProductCart();
 
                     })
@@ -164,20 +168,25 @@ const app = createApp({
                     alert(err.data.message);
                 })
         },
-        openProductModal(product_id) {
+        openProductModal(product_id) { ///先取得購物車id?
 
-            this.isLoadOpenModal = true;
-            this.isLoading = true;
+            this.isLoadOpenModal = product_id;
 
             this.getProduct('single', product_id)
                 .then((res) => {
                     productModalInfo.show();
-                    this.isLoadOpenModal = false;
-                    this.isLoading = false;
                 })
                 .catch((err) => {
                     alert(err.data.message);
                 })
+        },
+        closeProductModal(){
+            this.isLoadOpenModal='';
+            productModalInfo.hide();
+        },
+        isPhone(value) {
+            const phoneNumber = /^(09)[0-9]{8}$/
+            return phoneNumber.test(value) ? true : '需要正確的電話號碼'
         },
         onSubmit(){
             console.log('sunmit');

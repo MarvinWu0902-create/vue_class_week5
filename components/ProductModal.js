@@ -9,7 +9,7 @@ export default {
                     <span>{{innerProduct.title}}</span>
                 </h5>
                 <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+                    @click="close" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -25,8 +25,8 @@ export default {
                         <div class="h5">現在只要 {{innerProduct.price}} 元</div>
                         <div>
                             <div class="input-group">
-                               <input type="number" class="form-control" min="1" value="1">
-                                <button type="button" class="btn btn-primary">加入購物車</button>
+                               <input type="number" class="form-control" min="1" value="1" v-model="innerProduct.num">
+                                <button type="button" class="btn btn-primary" @click="addProduct({product_id:innerProduct.id,qty:innerProduct.num,type:'modal'})">加入購物車</button>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@ export default {
         </div>
     </div>
 </div>`,
-    props: ['tempProduct'],
+    props: ['tempProduct','close','addProduct'],
     data() {
         return {
             innerProduct: []
@@ -44,6 +44,7 @@ export default {
     },
     watch: {
         tempProduct() {
+            console.log(this.tempProduct);
             this.innerProduct = this.tempProduct;
         }
     }
