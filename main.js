@@ -4,9 +4,9 @@ const { Form, Field, ErrorMessage } = VeeValidate;
 import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/esm/axios.js';
 
 
-import productList from '/components/ProductList.js';
-import productCart from '/components/ProductShopCart.js';
-import productModal from '/components/ProductModal.js';
+import productList from './components/ProductList.js';
+import productCart from './components/ProductShopCart.js';
+import productModal from './components/ProductModal.js';
 // import productValidate from '/components/ProductValidate.js'
 
 const api = 'https://ec-course-api.hexschool.io/v2/api';
